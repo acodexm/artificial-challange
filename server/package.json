@@ -1,0 +1,40 @@
+{
+  "name": "server",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "build": "tsc",
+    "start-server": "webpack && node ./dist/index.js",
+    "start": "node dist/index.js",
+    "dev": "concurrently \"tsc -w\" \"nodemon dist/index.js\"",
+    "clear": "rimraf node_modules && rimraf dist && rimraf coverage",
+    "test": "jest",
+    "test:coverage": "yarn test --watchAll false --coverage"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "body-parser": "^1.19.0",
+    "cors": "^2.8.5",
+    "dotenv": "^8.2.0",
+    "express": "^4.17.1",
+    "lodash": "^4.17.19",
+    "match-sorter": "^4.2.0",
+    "moment": "^2.27.0",
+    "puppeteer": "^5.5.0"
+  },
+  "devDependencies": {
+    "@types/cors": "^2.8.7",
+    "@types/express": "^4.17.9",
+    "@types/jest": "^26.0.8",
+    "@types/lodash": "^4.14.158",
+    "@types/match-sorter": "^4.0.0",
+    "@types/node": "^14.0.27",
+    "concurrently": "^5.3.0",
+    "jest": "^26.2.2",
+    "nodemon": "^2.0.4",
+    "ts-jest": "^26.1.4",
+    "typescript": "^3.8.0"
+  }
+}

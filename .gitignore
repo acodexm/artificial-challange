@@ -1,0 +1,9 @@
+node_modules/
+coverage/
+.idea
+.vscode
+yarn.lock
+yarn-error.log
+export
+build
+**.snap

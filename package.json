@@ -1,0 +1,27 @@
+{
+  "name": "artificial-challange",
+  "version": "1.0.0",
+  "description": "hacker news, puppeteer, react, express,",
+  "main": "index.js",
+  "scripts": {
+    "test": "cd ./client && yarn run test:coverage && cd ../server && yarn run test:coverage",
+    "clear": "rimraf node_modules && cd ./server && yarn run clear && cd ../client && yarn run clear",
+    "create": "yarn install && cd ./server && yarn install && cd ../client && yarn install",
+    "start": "concurrently \"cd ./server && yarn run dev\" \"cd ./client && yarn run start\"",
+    "format": "prettier --write \"{client,server}/src/**/*.{js,jsx,ts,tsx}\""
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/acodexm/artificial-challange.git"
+  },
+  "author": "acodexm",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/acodexm/artificial-challange/issues"
+  },
+  "homepage": "https://github.com/acodexm/artificial-challange#readme",
+  "dependencies": {
+    "concurrently": "^5.3.0",
+    "prettier": "^2.2.1"
+  }
+}
