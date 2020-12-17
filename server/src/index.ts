@@ -2,6 +2,7 @@ import express from 'express';
 import cors from 'cors';
 import bodyParser from 'body-parser';
 import dotenv from 'dotenv';
+import { scrap } from './services/puppeteer';
 dotenv.config();
 const port = process.env.PORT ? Number(process.env.PORT) : 8080;
 console.log(process.env.PORT);
@@ -28,6 +29,10 @@ app.use(
 
 app.get('/', (req, res) => {
   res.send('available api: /api/todo');
+});
+app.get('/api/scrap', async (req, res) => {
+  const data = await scrap();
+  res.send(data);
 });
 
 app.listen(port, domain, () => {
