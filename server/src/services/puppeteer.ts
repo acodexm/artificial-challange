@@ -122,7 +122,7 @@ const scrapPosts = () => {
       salary: getSalary(item),
       location: getLocation(item),
       timestamp: getTimestamp(item),
-      text: item.querySelector('div.comment')?.innerHTML,
+      text: item.querySelector('span.commtext.c00')?.innerHTML,
     });
   });
   return results;
