@@ -7,6 +7,7 @@ import { getData } from './services/algoliaHN';
 import mongoose from 'mongoose';
 import { runSchedule } from './services/scheduler';
 import { Jobs } from './models/Jobs';
+import { algoliaJobs, getJobs, scrapJobs } from './controlers/jobs';
 dotenv.config();
 const port = process.env.PORT ? Number(process.env.PORT) : 8080;
 console.log(process.env.PORT);
@@ -18,6 +19,7 @@ app.use(bodyParser.json());
 
 const allowedOrigins = [
   'http://localhost:3000',
+  'http://localhost:3002',
   'https://news.ycombinator.com',
   'https://hn.algolia.com/',
 ];
@@ -36,24 +38,12 @@ app.use(
 );
 
 app.get('/', (req, res) => {
-  res.send('available api: /api/todo');
+  res.send('available api: /api/jobs, /api/scrap, /api/algolia');
 });
-app.get('/api/scrap', async (req, res) => {
-  // const data = await getData();
-  Jobs.find({}, (err, jobs) => {
-    if (err) return res.status(500).json(err);
-    if (!jobs)
-      return res.status(400).json({
-        key: 'no.result',
-        message: 'No jobs found',
-      });
-    return res.json(jobs);
-  })
-    .sort({ $natural: -1 })
-    .limit(1);
+app.get('/api/jobs', getJobs);
+app.get('/api/scrap', scrapJobs);
+app.get('/api/algolia', algoliaJobs);
 
-  // res.send(`<pre><code>${JSON.stringify(data, null, 4)}</code></pre>`);
-});
 mongoose.connect(
   'mongodb://localhost:27017/hn-jobs',
   {
@@ -63,14 +53,19 @@ mongoose.connect(
     console.log('connected to database');
   }
 );
+
 runSchedule(() => {
   getData()
     .then((jobs) => {
       const JobsEntity = new Jobs({ json: jobs });
       return JobsEntity.save();
     })
+    .then((recent) => {
+      return Jobs.find({}, (err, docs) => {
+        docs.filter((doc) => doc.id != recent.id).forEach((doc) => doc.delete());
+      });
+    })
     .catch(console.error);
-    //todo delete previous
 });
 app.listen(port, domain, () => {
   console.info('>>> 🌎 Open %s/ in your browser.', address);
