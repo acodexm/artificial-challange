@@ -13,9 +13,10 @@ type Item = {
   story_id?: number;
   children: Item[];
 };
-interface Job extends Document {
+export interface Job extends Document {
   json: Item;
+  thread: string;
 }
-const JobsSchema = new mongoose.Schema({ json: Object });
+const JobsSchema = new mongoose.Schema({ json: Object, thread: String });
 const Jobs = mongoose.model<Job>('jobs', JobsSchema);
 export { Jobs };

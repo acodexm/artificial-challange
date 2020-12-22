@@ -1,6 +1,6 @@
 import puppeteer from 'puppeteer';
 
-const scrap = () =>
+const scrap = (id: string) =>
   new Promise(async (resolve, reject) => {
     try {
       const browser = await puppeteer.launch();
@@ -20,7 +20,7 @@ const scrap = () =>
        * this could be variable request from the client
        * but for sake of simplicity I leave it hardcoded
        * */
-      await page.goto('https://news.ycombinator.com/item?id=25266288');
+      await page.goto(`https://news.ycombinator.com/item?id=${id}`);
       let data: any[] = [];
       let pageCount = 0;
       while (true) {

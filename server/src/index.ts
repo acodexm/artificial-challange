@@ -2,12 +2,9 @@ import express from 'express';
 import cors from 'cors';
 import bodyParser from 'body-parser';
 import dotenv from 'dotenv';
-import { scrap } from './services/puppeteer';
-import { getData } from './services/algoliaHN';
 import mongoose from 'mongoose';
-import { runSchedule } from './services/scheduler';
-import { Jobs } from './models/Jobs';
 import { algoliaJobs, getJobs, scrapJobs } from './controlers/jobs';
+
 dotenv.config();
 const port = process.env.PORT ? Number(process.env.PORT) : 8080;
 console.log(process.env.PORT);
@@ -54,19 +51,6 @@ mongoose.connect(
   }
 );
 
-runSchedule(() => {
-  getData()
-    .then((jobs) => {
-      const JobsEntity = new Jobs({ json: jobs });
-      return JobsEntity.save();
-    })
-    .then((recent) => {
-      return Jobs.find({}, (err, docs) => {
-        docs.filter((doc) => doc.id != recent.id).forEach((doc) => doc.delete());
-      });
-    })
-    .catch(console.error);
-});
 app.listen(port, domain, () => {
   console.info('>>> 🌎 Open %s/ in your browser.', address);
 });

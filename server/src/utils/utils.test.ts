@@ -46,7 +46,6 @@ const data = [
     type: 'comment',
     url: null,
   },
-
 ];
 describe('test utils', () => {
   it('sorts data desc', () => {
