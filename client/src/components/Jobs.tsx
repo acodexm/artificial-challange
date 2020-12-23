@@ -1,4 +1,4 @@
-import React, { Dispatch, FunctionComponent, SetStateAction } from 'react';
+import React, { FunctionComponent } from 'react';
 import { useQuery } from 'react-query';
 import SearchBar from './SearchBar';
 import Pagination from './Pagination';
@@ -18,7 +18,12 @@ type Props = OwnProps;
 
 const Jobs: FunctionComponent<Props> = ({ setState, state }) => {
   const fetchProjects = (state: State) => {
-    return fetch(`http://localhost:8080/api/jobs?${qs.stringify(state,{ skipEmptyString: true, skipNull: true })}`).then((res) => res.json());
+    return fetch(
+      `http://localhost:8080/api/jobs?${qs.stringify(state, {
+        skipEmptyString: true,
+        skipNull: true,
+      })}`
+    ).then((res) => res.json());
   };
 
   const { isLoading, isError, data, isFetching, isPreviousData } = useQuery(
@@ -35,12 +40,12 @@ const Jobs: FunctionComponent<Props> = ({ setState, state }) => {
         ))}
       </LoadingHandler>
       <Pagination
+        isFetching={isFetching}
         pageIndex={state.pageIndex}
         setPage={setState}
         isPreviousData={isPreviousData}
         hasMore={data?.hasMore ?? true}
       />
-      {isFetching ? <span> Loading...</span> : null}
     </Container>
   );
 };

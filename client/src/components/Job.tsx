@@ -1,6 +1,8 @@
 import React, { FunctionComponent } from 'react';
 import styled from 'styled-components';
 import { isArray } from 'lodash';
+import Comment from './Comment';
+import InfoHeader from './InfoHeader';
 
 interface OwnProps {
   job: any;
@@ -26,7 +28,7 @@ const JobCard = styled.div`
   a {
     color: #f79100;
   }
-  p:first-of-type {
+  p:first-child {
     font-weight: bold;
   }
 `;
@@ -40,7 +42,9 @@ const Job: FunctionComponent<Props> = ({ job, filters }) => {
 
   return (
     <JobCard>
+      <InfoHeader author={job.author} timestamp={job.created_at} />
       <span dangerouslySetInnerHTML={{ __html: content }} />
+      <Comment comments={job.children} />
     </JobCard>
   );
 };

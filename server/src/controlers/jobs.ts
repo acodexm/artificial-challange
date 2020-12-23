@@ -107,9 +107,10 @@ export const getPaginatedData = (
 ) => {
   let page = jobs[0].json.children;
 
-  const len = page.length;
+  let len = page.length;
   if (filters) {
     page = page.filter((job) => job.text?.match(new RegExp(filters.join('|'), 'gmi') ?? true));
+    len = page.length;
   }
   if (sortBy) {
     if (sortBy == 'date')
@@ -127,6 +128,7 @@ export const getPaginatedData = (
         })
         .sort((l, r) => (desc === 'true' ? l.salary[0] - r.salary[0] : r.salary[0] - l.salary[0]));
     }
+    len = page.length;
   }
 
   const startRow = pageSize * Number(pageIndex);

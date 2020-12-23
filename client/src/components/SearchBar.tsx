@@ -98,9 +98,12 @@ const SearchBar: FunctionComponent<Props> = ({ setSearch, state }) => {
   const handleSearch = () => {
     setFilters((prev) => {
       const f = [...prev];
-      const value = search.current?.value;
-      if (isString(value) && value !== '' && !f.find((v) => v == value)) {
-        f.push(value);
+      if (search.current) {
+        const { value } = search.current;
+        search.current.value = '';
+        if (isString(value) && value !== '' && !f.find((v) => v == value)) {
+          f.push(value);
+        }
       }
       return f;
     });
