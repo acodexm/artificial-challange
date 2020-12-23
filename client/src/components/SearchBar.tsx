@@ -1,22 +1,24 @@
-import React, { FunctionComponent, useEffect, useRef, useState } from 'react';
+import React, { FunctionComponent, SetStateAction, useEffect, useRef, useState } from 'react';
 import Select from 'react-select';
+import { State } from './Main';
 
 interface OwnProps {
-  setSearch: React.Dispatch<any>;
+  state:State
+  setSearch: React.Dispatch<SetStateAction<State>>;
 }
 
 type Props = OwnProps;
 
-const SearchBar: FunctionComponent<Props> = ({ setSearch }) => {
-  const [thread, setThread] = useState('25266288');
+const SearchBar: FunctionComponent<Props> = ({ setSearch,state }) => {
+  const [thread, setThread] = useState(state.thread);
   const [threads, setThreads] = useState([]);
-  const [sortBy, setSortBy] = useState('date');
-  const [desc, setDesc] = useState('false');
-  const [filters, setFilters] = useState<(string | undefined)[]>([]);
+  const [sortBy, setSortBy] = useState(state.sortBy);
+  const [desc, setDesc] = useState(state.desc);
+  const [filters, setFilters] = useState<(string | undefined)[]>(state.filters);
   const search = useRef<HTMLInputElement>(null);
 
   useEffect(() => {
-    setSearch({ thread, sortBy, desc, filters });
+    setSearch((prevState) => ({ ...prevState, thread, sortBy, desc, filters }));
   }, [sortBy, thread, desc, filters]);
 
   useEffect(() => {
@@ -45,7 +47,7 @@ const SearchBar: FunctionComponent<Props> = ({ setSearch }) => {
             {filter}{' '}
             <span
               onClick={() =>
-                setFilters((prevState) => prevState.filter((f) => f !== filter && !f))
+                setFilters((prevState) => prevState.filter((f) => f !== filter && !!f))
               }>
               x
             </span>
@@ -58,7 +60,7 @@ const SearchBar: FunctionComponent<Props> = ({ setSearch }) => {
       </select>
       <input
         type="checkbox"
-        defaultChecked={false}
+        defaultChecked={state.desc==='true'}
         onChange={(e) => setDesc(e.target.checked ? 'true' : 'false')}
       />
     </div>
