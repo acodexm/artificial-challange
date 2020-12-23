@@ -4,22 +4,15 @@ import { sortByType } from '../utils/utils';
 import { getData } from '../services/algoliaHN';
 import { scrap } from '../services/puppeteer';
 import { Scheduler } from '../services/scheduler';
-import { isArray } from 'lodash';
+import { flatten } from 'lodash';
 //that could be variable request
 const pageSize = 20;
 
 export const getJobs: RequestHandler = async (req, res) => {
   let filters: string[] = [];
-  if (req.query.filters)
-    if (!isArray(req.query.filters)) {
-      filters = [req.query.filters as string];
-    } else {
-      filters = [...(req.query.filters as string[])];
-    }
-  const pageIndex = req.query.pageIndex as string;
-  const thread = req.query.thread as string;
-  const sortBy = req.query.sortBy as string;
-  const desc = req.query.desc as string;
+  if (req.query.filters) filters = flatten([req.query.filters as string]);
+  const { pageIndex, thread, sortBy, desc } = req.query as { [key: string]: string };
+
   if (Scheduler.isRunning(thread)) {
     console.log(`search for thread ${thread}`);
     Jobs.find({ thread }, (err, jobs) => {

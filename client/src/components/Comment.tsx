@@ -1,9 +1,10 @@
 import React, { FunctionComponent, useState } from 'react';
 import styled from 'styled-components';
 import InfoHeader from './InfoHeader';
+import { Item } from '../model/Item';
 
 interface OwnProps {
-  comments: any[];
+  comments: Item[];
 }
 
 type Props = OwnProps;

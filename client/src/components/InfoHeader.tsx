@@ -3,7 +3,7 @@ import styled from 'styled-components';
 
 interface OwnProps {
   author: string;
-  timestamp: number;
+  timestamp: string;
 }
 
 type Props = OwnProps;

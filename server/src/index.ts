@@ -16,7 +16,6 @@ app.use(bodyParser.json());
 
 const allowedOrigins = [
   'http://localhost:3000',
-  'http://localhost:3001',
   'https://news.ycombinator.com',
   'https://hn.algolia.com/',
 ];

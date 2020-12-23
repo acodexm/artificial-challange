@@ -3,9 +3,10 @@ import styled from 'styled-components';
 import { isArray } from 'lodash';
 import Comment from './Comment';
 import InfoHeader from './InfoHeader';
+import { Item } from '../model/Item';
 
 interface OwnProps {
-  job: any;
+  job: Item;
   filters: (string | undefined)[];
 }
 

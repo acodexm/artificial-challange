@@ -8,6 +8,7 @@ import { Container } from 'styled-bootstrap-grid';
 import Job from './Job';
 import { QueryUpdater } from '../helpers/hooks/useQueryAsState';
 import qs from 'query-string';
+import { Item } from '../model/Item';
 
 interface OwnProps {
   state: State;
@@ -35,7 +36,7 @@ const Jobs: FunctionComponent<Props> = ({ setState, state }) => {
     <Container>
       <SearchBar state={state} setSearch={setState} />
       <LoadingHandler loading={isLoading} error={isError}>
-        {data?.page?.map((job: any) => (
+        {data?.page?.map((job: Item) => (
           <Job key={job.id} job={job} filters={state.filters} />
         ))}
       </LoadingHandler>
