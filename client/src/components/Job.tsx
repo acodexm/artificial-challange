@@ -1,5 +1,6 @@
 import React, { FunctionComponent } from 'react';
 import styled from 'styled-components';
+import { isArray } from 'lodash';
 
 interface OwnProps {
   job: any;
@@ -31,9 +32,11 @@ const JobCard = styled.div`
 `;
 const Job: FunctionComponent<Props> = ({ job, filters }) => {
   let content = job.text;
-  filters.forEach((filter) => {
-    if (filter) content = highlightWordsInHtml(content, filter, '#c36120');
-  });
+  if (isArray(filters))
+    filters.forEach((filter) => {
+      if (filter) content = highlightWordsInHtml(content, filter, '#c36120');
+    });
+  else if (filters) content = highlightWordsInHtml(content, filters, '#c36120');
 
   return (
     <JobCard>

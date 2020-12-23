@@ -1,9 +1,10 @@
-import React, { FunctionComponent, SetStateAction } from 'react';
+import React, { FunctionComponent } from 'react';
 import { State } from './Main';
+import { QueryUpdater } from '../helpers/hooks/useQueryAsState';
 
 interface OwnProps {
   pageIndex: number;
-  setPage: React.Dispatch<SetStateAction<State>>;
+  setPage: QueryUpdater<State>;
   isPreviousData: boolean;
   hasMore: boolean;
 }
@@ -14,16 +15,14 @@ const Pagination: FunctionComponent<Props> = ({ pageIndex, setPage, isPreviousDa
   return (
     <div>
       <button
-        onClick={() =>
-          setPage((prevState) => ({ ...prevState, pageIndex: Math.max(pageIndex - 1, 0) }))
-        }
+        onClick={() => setPage({ pageIndex: Math.max(pageIndex - 1, 0) })}
         disabled={pageIndex === 0}>
         Previous Page
       </button>
       <button
         onClick={() => {
           if (!isPreviousData && hasMore) {
-            setPage((prevState) => ({ ...prevState, pageIndex: pageIndex + 1 }));
+            setPage({ pageIndex: pageIndex + 1 });
           }
         }}
         // Disable the Next Page button until we know a next page is available
