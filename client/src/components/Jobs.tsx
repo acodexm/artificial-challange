@@ -6,21 +6,19 @@ import LoadingHandler from './loading/LoadingHandler';
 import { State } from './Main';
 import { Container } from 'styled-bootstrap-grid';
 import Job from './Job';
+import { QueryUpdater } from '../helpers/hooks/useQueryAsState';
+import qs from 'query-string';
 
 interface OwnProps {
   state: State;
-  setState: Dispatch<SetStateAction<State>>;
+  setState: QueryUpdater<State>;
 }
 
 type Props = OwnProps;
 
 const Jobs: FunctionComponent<Props> = ({ setState, state }) => {
-  const fetchProjects = ({ thread, pageIndex, filters, sortBy, desc }: State) => {
-    const url = new URL(`http://localhost:8080/api/jobs?thread=${thread}&pageIndex=${pageIndex}`);
-    filters && filters.forEach((filter) => filter && url.searchParams.append('filters', filter));
-    sortBy && url.searchParams.set('sortBy', sortBy);
-    desc && url.searchParams.set('desc', desc);
-    return fetch(url.toString()).then((res) => res.json());
+  const fetchProjects = (state: State) => {
+    return fetch(`http://localhost:8080/api/jobs?${qs.stringify(state,{ skipEmptyString: true, skipNull: true })}`).then((res) => res.json());
   };
 
   const { isLoading, isError, data, isFetching, isPreviousData } = useQuery(
