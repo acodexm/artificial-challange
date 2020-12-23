@@ -1,11 +1,10 @@
 import React from 'react';
-import { render } from '@testing-library/react';
-import { expect } from 'chai';
 import App from './App';
+import { renderWithProviders } from './helpers/mocked-component';
 
 describe('<App>', () => {
   it('renders learn react link', () => {
-    const { getByText } = render(<App />);
+    const { getByText } = renderWithProviders(<App hideLoader={() => {}} />);
     const linkElement = getByText(/HACKER NEWS/i);
     expect(document.body.contains(linkElement));
   });
