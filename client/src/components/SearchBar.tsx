@@ -7,6 +7,7 @@ import styled from 'styled-components';
 import { Container, Row } from 'styled-bootstrap-grid';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faSortAmountDown, faSortAmountUp } from '@fortawesome/free-solid-svg-icons';
+import useLocalState from '../helpers/hooks/useLocalState';
 
 interface OwnProps {
   state: State;
@@ -71,10 +72,13 @@ const SearchBar: FunctionComponent<Props> = ({ setSearch, state }) => {
   const [desc, setDesc] = useState(state.desc);
   const [filters, setFilters] = useState<string[]>(flatten([state.filters]));
   const search = useRef<HTMLInputElement>(null);
-  const [selectedOption, setSelectedOption] = useState<ValueType<OptionType, false>>({
-    value: state.thread,
-    label: 'todo',
-  });
+  const [selectedOption, setSelectedOption] = useLocalState<ValueType<OptionType, false>>(
+    'CHOSEN_THREAD',
+    {
+      value: state.thread,
+      label: 'Who is hiring 2020',
+    }
+  );
 
   const handleChange = (option: ValueType<OptionType, false>) => {
     setSelectedOption(option);
@@ -111,6 +115,7 @@ const SearchBar: FunctionComponent<Props> = ({ setSearch, state }) => {
   return (
     <div>
       <Select
+        defaultValue={selectedOption}
         onChange={handleChange}
         options={threads}
         placeholder="Select topic"

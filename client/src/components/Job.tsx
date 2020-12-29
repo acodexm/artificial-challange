@@ -12,6 +12,12 @@ interface OwnProps {
 
 type Props = OwnProps;
 
+function highlightSalaryInHtml(line: string, color: string) {
+  // ensure we capture the keyword, except if found inside a html tag
+  const regex = new RegExp(`(?<!<[^>]*)([$€£]\\d+.{0,2}-.{0,2}[$€£]?\\d+k?)`, 'gmi');
+  const spanTag = `<span style="color: ${color}">$1</span>`;
+  return line.replace(regex, spanTag);
+}
 function highlightWordsInHtml(line: string, word: string, color: string) {
   // ensure we capture the keyword, except if found inside a html tag
   const regex = new RegExp(`(?<!<[^>]*)(${word})`, 'gmi');
@@ -34,7 +40,7 @@ const JobCard = styled.div`
   }
 `;
 const Job: FunctionComponent<Props> = ({ job, filters }) => {
-  let content = job.text;
+  let content = highlightSalaryInHtml(job.text,'#ff0000');
   if (isArray(filters))
     filters.forEach((filter) => {
       if (filter) content = highlightWordsInHtml(content, filter, '#c36120');
